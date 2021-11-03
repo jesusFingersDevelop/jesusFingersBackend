@@ -1,61 +1,27 @@
-name: Deploy
+name: Deploy develop
 on:
   push:
-    branches: [develop]
-
-  pull_request:
-    branches: [develop]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    branches:
+    - develop
 
 jobs:
-  # This workflow contains a single job called "build"
-
   build:
-    # The type of runner that the job will run on
-
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
-      - uses: actions/checkout@v2
+    - name: Checkout source code
+      uses: actions/checkout@v2
 
-      - name: Install Packages
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
 
-        run: npm install
-
-      - name: Gnerate Bundle File
-
-        run: npm run build
-
-      - name: check dir
-
-        run: cd build && ls -al
-
-      - name: Generate deployment package
-
-        run: cd build && zip -r deploy.zip .
-
-      - name: Deploy to EB
-
-        uses: einaregilsson/beanstalk-deploy@v10
-
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-          application_name: cp-admin-client
-
-          environment_name: cp-client-dev
-
-          version_label: ${{github.run_number}}
-
-          use_existing_version_if_available: true
-
-          region: ap-northeast-2
-
-          deployment_package: build/deploy.zip
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v18
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: MyApplicationName
+        environment_name: MyApplication-Environment
+        version_label: 12345
+        region: us-west-2
+        deployment_package: deploy.zip
