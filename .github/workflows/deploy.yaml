@@ -67,26 +67,26 @@ jobs:
               sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update 
             
             # Configure AWS credentials   
-            - name: Configure AWS credentials 
-              uses: aws-actions/configure-aws-credentials@v1 
-              with: aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-              aws-region: ${{ secrets.AWS_REGION }} 
-              
-            # Make ZIP file with source code 
-            # -x는 zip파일 생성 시에 해당 부분들을 제외한다. 
-            - name: Generate deployment package 
-              run: zip -r deploy.zip . -x '*.git*' './src/*' './aws/*' awscliv2.zip
+          - name: Configure AWS credentials 
+            uses: aws-actions/configure-aws-credentials@v1 
+            with: aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+            aws-region: ${{ secrets.AWS_REGION }} 
+            
+          # Make ZIP file with source code 
+          # -x는 zip파일 생성 시에 해당 부분들을 제외한다. 
+          - name: Generate deployment package 
+            run: zip -r deploy.zip . -x '*.git*' './src/*' './aws/*' awscliv2.zip
 
 
-            - name: Deploy to EB
-              uses: einaregilsson/beanstalk-deploy@v18
-              with:
-                aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                application_name: Jesusfingers
-                environment_name: Jesusfingers-env-1
-                version_label: 15
-                region: ${{ secrets.AWS_REGION }} 
-                use_existing_version_if_available: true
-                deployment_package: deploy.zip
+          - name: Deploy to EB
+            uses: einaregilsson/beanstalk-deploy@v18
+            with:
+              aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              application_name: Jesusfingers
+              environment_name: Jesusfingers-env-1
+              version_label: 15
+              region: ${{ secrets.AWS_REGION }} 
+              use_existing_version_if_available: true
+              deployment_package: deploy.zip
