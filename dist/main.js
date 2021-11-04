@@ -166,12 +166,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __webpack_require__(4);
-const swagger_1 = __webpack_require__(5);
-const express_basic_auth_1 = __importDefault(__webpack_require__(6));
-const app_module_1 = __webpack_require__(7);
+const common_1 = __webpack_require__(4);
+const core_1 = __webpack_require__(5);
+const swagger_1 = __webpack_require__(6);
+const express_basic_auth_1 = __importDefault(__webpack_require__(7));
+const app_module_1 = __webpack_require__(8);
+const http_exception_filter_1 = __webpack_require__(13);
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.useGlobalPipes(new common_1.ValidationPipe());
+    app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
     app.use(['/api', '/api-json'], (0, express_basic_auth_1.default)({
         challenge: true,
         users: {
@@ -186,6 +190,10 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api', app, document);
+    app.enableCors({
+        origin: true,
+        credentials: true,
+    });
     const PORT = process.env.PORT;
     await app.listen(PORT);
     console.log(`hello this is ${PORT} port`);
@@ -202,24 +210,31 @@ bootstrap();
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("@nestjs/core");
+module.exports = require("@nestjs/common");
 
 /***/ }),
 /* 5 */
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("@nestjs/swagger");
+module.exports = require("@nestjs/core");
 
 /***/ }),
 /* 6 */
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("express-basic-auth");
+module.exports = require("@nestjs/swagger");
 
 /***/ }),
 /* 7 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("express-basic-auth");
+
+/***/ }),
+/* 8 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -232,7 +247,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AppModule = void 0;
-const common_1 = __webpack_require__(8);
+const common_1 = __webpack_require__(4);
 const config_1 = __webpack_require__(9);
 const app_controller_1 = __webpack_require__(10);
 const app_service_1 = __webpack_require__(11);
@@ -251,13 +266,6 @@ AppModule = __decorate([
 ], AppModule);
 exports.AppModule = AppModule;
 
-
-/***/ }),
-/* 8 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@nestjs/common");
 
 /***/ }),
 /* 9 */
@@ -284,7 +292,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AppController = void 0;
-const common_1 = __webpack_require__(8);
+const common_1 = __webpack_require__(4);
 const app_service_1 = __webpack_require__(11);
 let AppController = class AppController {
     constructor(appService) {
@@ -321,7 +329,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AppService = void 0;
-const common_1 = __webpack_require__(8);
+const common_1 = __webpack_require__(4);
 let AppService = class AppService {
     async getHello() {
         return 'plz';
@@ -347,18 +355,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LoggerMiddleware = void 0;
-const common_1 = __webpack_require__(8);
+const common_1 = __webpack_require__(4);
 let LoggerMiddleware = class LoggerMiddleware {
     constructor() {
         this.logger = new common_1.Logger('HTTP');
     }
-    use(request, response, next) {
-        const { ip, method, originalUrl } = request;
-        const userAgent = request.get('user-agent') || '';
-        response.on('finish', () => {
-            const { statusCode } = response;
-            const contentLength = response.get('content-Length');
-            this.logger.log(`${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`);
+    use(req, res, next) {
+        res.on('finish', () => {
+            this.logger.log(`${req.ip}, ${req.method}, ${res.statusCode}`, req.statusCode);
         });
         next();
     }
@@ -367,6 +371,42 @@ LoggerMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], LoggerMiddleware);
 exports.LoggerMiddleware = LoggerMiddleware;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HttpExceptionFilter = void 0;
+const common_1 = __webpack_require__(4);
+let HttpExceptionFilter = class HttpExceptionFilter {
+    catch(exception, host) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse();
+        const request = ctx.getRequest();
+        const status = exception.getStatus();
+        const error = exception.getResponse();
+        response.status(status).json({
+            statusCode: status,
+            timestamp: new Date().toISOString(),
+            path: request.url,
+            error,
+        });
+    }
+};
+HttpExceptionFilter = __decorate([
+    (0, common_1.Catch)(common_1.HttpException)
+], HttpExceptionFilter);
+exports.HttpExceptionFilter = HttpExceptionFilter;
 
 
 /***/ })
@@ -431,7 +471,7 @@ exports.LoggerMiddleware = LoggerMiddleware;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("6df269dc95db26df80c1")
+/******/ 		__webpack_require__.h = () => ("41f64bc25b46babd4636")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
