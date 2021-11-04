@@ -44,9 +44,9 @@ jobs:
             cat .env 
 
           # Initialize Node.js 
-          - name: Install Node.js ${{ matrix.node-version }} 
+          - name: Install Node.js ['14.x'] 
             uses: actions/setup-node@v1 
-            with: node-version: ${{ matrix.node-version }} 
+            with: node-version: ['14.x'] 
             # Install project dependencies and build 
           - name: Install dependencies 
             run: npm install 
