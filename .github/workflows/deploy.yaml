@@ -29,7 +29,7 @@ jobs:
       name: CD Pipeline 
       runs-on: ubuntu-18.04 
       strategy: 
-        matrix: node-version: ${{ matrix.node }} # 위의 buildAndTest가 실행되고 진행된다. 
+        matrix: node-version: [12.x, 14.x, 16.x] # 위의 buildAndTest가 실행되고 진행된다. 
         needs: buildAndTest 
         steps: 
           - uses: actions/checkout@v2 
