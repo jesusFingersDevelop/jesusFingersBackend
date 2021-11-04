@@ -20,9 +20,9 @@ jobs:
       run: npm i
 
     - name: build
-      "build": "nest build && cp package.json dist/",
-      "postbuild": "cd dist && zip ../dist.zip -r * .[^.]*",
-      "start": "node main.js"
+      run : npm run build
+    # Runs a single command using the runners shell
+
 
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v18
