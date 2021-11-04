@@ -20,10 +20,9 @@ jobs:
       run: npm i
 
     - name: build
-      run : npm run build
-
-    - name: Generate deployment package
-      run: zip -r deploy.zip . -x '*.git*'
+      "build": "nest build && cp package.json dist/",
+      "postbuild": "cd dist && zip ../dist.zip -r * .[^.]*",
+      "start": "node main.js"
 
     - name: Deploy to EB
       uses: einaregilsson/beanstalk-deploy@v18
