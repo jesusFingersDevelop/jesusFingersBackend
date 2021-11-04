@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-18.04 
     strategy: # Node version은 12 버전을 이용한다. 
       matrix: 
-        node-version: ['12.x'] 
+        node-version: ['14.x'] 
         
     steps: 
       - uses: actions/checkout@v2 # Initialize Node.js 
-      - name: Install Node.js ${{ matrix.node-version }} 
+      - name: Install Node.js ['14.x'] 
         uses: actions/setup-node@v1 
-        with: node-version: ${{ matrix.node-version }} 
+        with: node-version: ['14.x'] 
         # Install project dependencies, test and build 
       
       - name: Install dependencies 
@@ -28,7 +28,7 @@ jobs:
       name: CD Pipeline 
       runs-on: ubuntu-18.04 
       strategy: 
-        matrix: node-version: ['12.x'] # 위의 buildAndTest가 실행되고 진행된다. 
+        matrix: node-version: ['14.x'] # 위의 buildAndTest가 실행되고 진행된다. 
         needs: buildAndTest 
         steps: 
           - uses: actions/checkout@v2 
