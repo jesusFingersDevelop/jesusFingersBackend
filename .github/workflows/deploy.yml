@@ -71,8 +71,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: jesusFingers
-          environment_name: Jesusfingers-env
+          application_name: jesusFingers-nestjs-server
+          environment_name: jesujesusFingers-nestjs-server
           version_label: 12345678
           region: ${{ secrets.AWS_REGION }}
           use_existing_version_if_available: true
