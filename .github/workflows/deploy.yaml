@@ -31,7 +31,7 @@ jobs:
     strategy:
       matrix:
         node: [12.x, 14.x, 16.x] # 위의 buildAndTest가 실행되고 진행된다.
-    needs: buildAndTest
+
     steps:
       - uses: actions/checkout@v2
       # env 파일을 이용할 일이 보통 많은데,
