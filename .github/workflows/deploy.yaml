@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy: # Node version은 12 버전을 이용한다.
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2 # Initialize Node.js
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node: [12.x, 14.x, 16.x] # 위의 buildAndTest가 실행되고 진행된다.
+        node: [14.x] # 위의 buildAndTest가 실행되고 진행된다.
 
     steps:
       - uses: actions/checkout@v2
