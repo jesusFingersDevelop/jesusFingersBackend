@@ -61,9 +61,6 @@ jobs:
       - name: run postbuild
         run: npm run postbuild
 
-      - name: main.js -> index.js
-        run: cd dist && mv main.js index.js
-
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
         with:
