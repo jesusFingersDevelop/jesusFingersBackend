@@ -57,6 +57,7 @@ jobs:
         # 아래에서 zip 파일 구성 시 src 폴더를 제외한 것을 확인할 수 있다.
       - name: Run build
         run: npm run build
+        run: npm run postbuild
 
       # Make ZIP file with source code
       # -x는 zip파일 생성 시에 해당 부분들을 제외한다.
