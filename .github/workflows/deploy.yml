@@ -60,8 +60,16 @@ jobs:
 
       # Make ZIP file with source code
       # -x는 zip파일 생성 시에 해당 부분들을 제외한다.
-      - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*' './node_modules/*'
+      - name: add post_build #nestjs의 특성을 위해
+        post_build:
+          commands:
+            - cp -R node_modules/ dist/node_modules # nodejs needs this
+            - cp Procfile dist/Procfile # EBS needs this
+        artifacts:
+          files:
+            - '**/*'
+          discard-paths: no
+          base-directory: dist
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
@@ -70,7 +78,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: jesusFingers
           environment_name: Jesusfingers-env
-          version_label: 1234567
+          version_label: 12345678
           region: ${{ secrets.AWS_REGION }}
           use_existing_version_if_available: true
           deployment_package: deploy.zip
