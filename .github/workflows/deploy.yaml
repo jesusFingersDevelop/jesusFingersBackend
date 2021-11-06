@@ -58,26 +58,10 @@ jobs:
       - name: Run build
         run: npm run build
 
-        # Install AWS CLI 2
-      - name: Install AWS CLI 2
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
-          unzip awscliv2.zip 
-          which aws 
-          sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-
-        # Configure AWS credentials
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
       # Make ZIP file with source code
       # -x는 zip파일 생성 시에 해당 부분들을 제외한다.
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*' './node_modules/*' './src/*' './aws/*' awscliv2.zip
+        run: zip -r deploy.zip . -x '*.git*' './node_modules/*'
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
@@ -86,7 +70,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: jesujesusFingers-nestjs-server
           environment_name: jesujesusFingers-nestjs-server
-          version_label: 12345
+          version_label: 1101
           region: ${{ secrets.AWS_REGION }}
           use_existing_version_if_available: true
           deployment_package: deploy.zip
