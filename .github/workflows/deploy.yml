@@ -59,7 +59,7 @@ jobs:
         run: npm run build
 
       - name: run postbuild
-        run: zip -r deploy.zip . -x '*.git*' './src/*' './node_modules/*'
+        run: zip deploy.zip -r . -x '*.git*' './src/*' './node_modules/*'
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
