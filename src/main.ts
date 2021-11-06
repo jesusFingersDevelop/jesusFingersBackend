@@ -3,6 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import expressBasicAuth from 'express-basic-auth';
 import { AppModule } from './app.module';
+import cookieParser from 'cookie-parser';
+
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 
 declare const module: any;
@@ -13,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(
-    ['/api', '/api-json'],
+    ['/docs', '/docs-json'],
     expressBasicAuth({
       challenge: true,
       users: {
@@ -28,8 +30,9 @@ async function bootstrap() {
     .addTag('열심히 만들어보자구 ㅎ_ㅎ')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 
+  app.use(cookieParser());
   app.enableCors({
     origin: true,
     credentials: true,
@@ -38,6 +41,7 @@ async function bootstrap() {
   const PORT = process.env.PORT;
   await app.listen(PORT);
   console.log(`hello this is ${PORT} port`);
+
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
