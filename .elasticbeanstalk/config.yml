@@ -1,5 +1,0 @@
-branch-defaults:
-  develop:
-    environment: jesujesusFingers-nestjs-server
-global:
-  profile: eb-cli
