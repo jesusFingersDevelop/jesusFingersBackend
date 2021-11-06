@@ -1,1 +1,1 @@
-web: node dist/index.js
+web: coress-env NODE_ENV=production PORT=80 pm2 start dist/main.js

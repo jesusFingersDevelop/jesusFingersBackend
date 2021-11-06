@@ -21,14 +21,14 @@ async function bootstrap() {
       },
     }),
   );
-  const config = new DocumentBuilder()
-    .setTitle('Jesusfingers')
-    .setDescription('Jesusfingers API description')
-    .setVersion('1.0')
-    .addTag('열심히 만들어보자구 ㅎ_ㅎ')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  // const config = new DocumentBuilder()
+  //   .setTitle('Jesusfingers')
+  //   .setDescription('Jesusfingers API description')
+  //   .setVersion('1.0')
+  //   .addTag('열심히 만들어보자구 ㅎ_ㅎ')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
 
   app.enableCors({
     origin: true,

@@ -8,12 +8,12 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    }),
+    // MongooseModule.forRoot(process.env.MONGODB_URI, {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    //   useCreateIndex: true,
+    //   useFindAndModify: false,
+    // }),
   ],
   controllers: [AppController],
   providers: [AppService],
