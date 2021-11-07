@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import expressBasicAuth from 'express-basic-auth';
 import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
 
 import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 
@@ -32,7 +31,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.use(cookieParser());
   app.enableCors({
     origin: true,
     credentials: true,

@@ -3,37 +3,26 @@ import axios from 'axios';
 
 @Injectable()
 export class UsersService {
-  kakaoCode() {
-    const REST_API_KEY = process.env.REST_API_KEY;
-    const REDIRECT_URI = process.env.REDIRECT_URI;
-    const redirectUrl = axios
-      .get(
-        `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`,
-      )
-      .then((res) => {
-        return res;
-      });
-    // .catch((res) => console.log(res));
+  async kakaoCode(body) {
+    // access code로 access token을 발급받는다.
+    const getToken = await axios.post(
+      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&code=${body.code}&client_secret=${process.env.CLIENT_SECRET}`,
+      '',
+    );
 
-    return 'redirectUrl';
-  }
-
-  kakaoToken(body) {
-    const headers: object = {
-      'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+    // access token으로 유저정보를 받아온다.
+    console.log(getToken.data.access_token);
+    const config = {
+      headers: { Authorization: `Bearer ${getToken.data.access_token}` },
     };
-
-    const getToken = axios
-      .post(
-        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&code=${body.code}&client_secret=${process.env.CLIENT_SECRET}`,
-        '',
-        headers,
-      )
-      .then((response) => {
-        console.log(response);
-      });
-
-    return;
-    // return body;
+    const getUserInfo = await axios.post(
+      `https://kapi.kakao.com/v2/user/me`,
+      '',
+      config,
+    );
+    // console.log(getToken);
+    return getUserInfo.data;
   }
+
+  getKakaoUsers() {}
 }

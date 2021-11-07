@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
-import { AnyArray } from 'mongoose';
 import { UsersService } from './users.service';
 
 @Controller('api/v1/users')
@@ -11,9 +10,9 @@ export class UsersController {
     return 'test';
   }
 
-  @Post('kakaoToken')
-  getKakaoToken(@Body() body: any) {
-    return this.usersService.kakaoToken(body);
+  @Post('kakaocode')
+  getKakaoUser(@Body() body: any) {
+    return this.usersService.kakaoCode(body);
   }
 
   @Post('jwt')
