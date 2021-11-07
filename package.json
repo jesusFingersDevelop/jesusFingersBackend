@@ -19,7 +19,7 @@
     "test": "jest",
     "build": "nest build",
     "postbuild": "zip ../dist.zip -r * .[^.]*",
-    "start": "export NODE_ENV=production & npm run build & node dist/main.js",
+    "start": "node dist/main.js",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
