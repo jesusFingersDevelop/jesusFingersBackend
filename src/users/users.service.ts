@@ -9,7 +9,6 @@ export class UsersService {
       `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.REST_API_KEY}&redirect_uri=${process.env.REDIRECT_URI}&code=${body.code}&client_secret=${process.env.CLIENT_SECRET}`,
       '',
     );
-
     // access token으로 유저정보를 받아온다.
     console.log(getToken.data.access_token);
     const config = {
