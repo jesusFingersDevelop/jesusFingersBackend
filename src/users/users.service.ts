@@ -1,8 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
+import { User } from 'src/entity/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+  ) {}
+
+  findAll(): Promise<User[]> {
+    return this.usersRepository.find();
+  }
+  findeOne(id: string): Promise<User> {
+    return this.usersRepository.findOne(id);
+  }
+  async remove(id: string): Promise<void> {
+    await this.usersRepository.delete(id);
+  }
+
   kakaoCode() {
     const REST_API_KEY = process.env.REST_API_KEY;
     const REDIRECT_URI = process.env.REDIRECT_URI;
