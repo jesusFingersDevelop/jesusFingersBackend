@@ -17,4 +17,14 @@ export class UsersController {
 
   @Post('jwt')
   async login() {}
+
+  @Get('test')
+  async testtesttest(@Body() body: any) {
+    return this.usersService.saveUser(body);
+  }
+
+  @Get('findall')
+  async testfindeall() {
+    return this.usersService.findAll();
+  }
 }
