@@ -3,6 +3,7 @@ import axios from 'axios';
 
 @Injectable()
 export class UsersService {
+  constructor() {}
   async kakaoCode(body) {
     // access code로 access token을 발급받는다.
     const getToken = await axios.post(
@@ -24,4 +25,10 @@ export class UsersService {
   }
 
   getKakaoUsers() {}
+
+  async findeUserById(id: number | string) {
+    return undefined;
+  }
+
+  async;
 }
