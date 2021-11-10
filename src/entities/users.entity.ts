@@ -6,28 +6,19 @@ import {
   UpdateDateColumn,
   OneToMany,
   DeleteDateColumn,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Users {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
 
-  @Column({
-    type: 'varchar',
-    length: 100,
-    unique: true,
-  })
-  userProviderId: string;
+  @PrimaryColumn()
+  kakaoId: string;
 
-  @Column({ type: 'smallint', default: 10 })
-  userLevel: number;
-
-  @Column({ type: 'varchar', length: 100, default: 'none' })
-  userProfileImage: string;
-
-  @Column({ type: 'varchar', length: 30 })
-  userNick: string;
+  @Column()
+  userEmail: string;
 
   @Column({ type: 'varchar', length: 20 })
   userProvider: string;
@@ -38,13 +29,13 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   userRefreshToken: string;
 
-  @DeleteDateColumn({ type: 'timestamptz' })
+  @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
   // @OneToMany(() => reservation,)

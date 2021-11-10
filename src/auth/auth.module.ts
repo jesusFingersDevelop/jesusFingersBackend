@@ -5,6 +5,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { KakaoStrategy } from './strategy/kakao.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { Users } from '../entities/users.entity';
+import { UsersService } from '../users/users.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 // @ts-ignore
 @Module({
@@ -15,8 +18,9 @@ import { JwtStrategy } from './strategy/jwt.strategy';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1y' },
     }),
+    TypeOrmModule.forFeature([Users]),
   ],
-  providers: [AuthService, JwtStrategy, KakaoStrategy],
-  exports: [AuthService, JwtModule, PassportModule],
+  providers: [AuthService, JwtStrategy, KakaoStrategy, UsersService],
+  exports: [AuthModule, JwtModule, PassportModule],
 })
 export class AuthModule {}

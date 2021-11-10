@@ -31,5 +31,6 @@ export class UsersController {
     res.cookie('access_token', access_token);
     res.cookie('refresh_token', refresh_token);
     res.redirect(process.env.CLIENT_URL);
+    console.log(req.user);
   }
 }

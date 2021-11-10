@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Users } from '../entities/users.entity';
+import { Repository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UsersService {
-  constructor() {}
+  constructor(
+    @InjectRepository(Users)
+    private readonly usersRepository: Repository<Users>,
+  ) {}
+
   async kakaoCode(body) {
     // access code로 access token을 발급받는다.
     const getToken = await axios.post(
@@ -24,11 +32,18 @@ export class UsersService {
     return getUserInfo.data;
   }
 
-  getKakaoUsers() {}
-
-  async findeUserById(id: number | string) {
-    return undefined;
+  async findUserById(kakaoId: number | string): Promise<Users | undefined> {
+    return await this.usersRepository.findOne(kakaoId);
   }
 
-  async;
+  async createKakaoUser(
+    user: Users,
+    id: string,
+    userEmail: string,
+  ): Promise<void> {
+    user.userId = uuid();
+    user.kakaoId = id;
+    user.userProvider = 'kakao';
+    user.userEmail = userEmail;
+  }
 }
