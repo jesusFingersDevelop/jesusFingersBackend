@@ -74,15 +74,3 @@ jobs:
           aws-region: ${{ secrets.AWS_S3_REGION }}
       - name: deploy
         run: aws deploy create-deployment --application-name ${{ secrets.CODEDEPLOY_APPLICATION_NAME }} --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name ${{ secrets.CODEDEPLOY_DEPLOYMENT_GROUP_NAME }} --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=jesusfingers-backend.zip --region ${{ secrets.AWS_S3_REGION }} --file-exists-behavior OVERWRITE
-
-      - name: send result to slack
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: Integration Test # default: 8398a7@action-slack
-          fields: repo,commit,message,author # default: repo,commit
-          mention: here
-          if_mention: failure,cancelled
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: always() # Pick up events even if the job fails or is canceled.
