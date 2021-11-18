@@ -11,5 +11,3 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-server:
-  port: ${JESUSFINGERS_APPLICATION_PORT}
