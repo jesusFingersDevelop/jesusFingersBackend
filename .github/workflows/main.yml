@@ -27,10 +27,6 @@ jobs:
 
       - name: build
         run: ./gradlew build
-        env:
-          DATASOURCE_URL: ${{ secrets.JESUSFINGERS_DATASOURCE_URL }}
-          DATASOURCE_USERNAME: ${{ secrets.JESUSFINGERS_DATASOURCE_USERNAME }}
-          DATASOURCE_PASSWORD: ${{ secrets.JESUSFINGERS_DATASOURCE_PASSWORD }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
