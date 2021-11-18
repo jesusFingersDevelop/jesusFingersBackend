@@ -45,14 +45,14 @@ jobs:
         run: zip -r jesusfingers-backend.zip build/libs appspec.yml scripts
 
       - name: upload to s3
-        run: aws s3 cp jesusfingers-backend.zip s3://${{ secrets.AWS_S3_BUCKE }}
+        run: aws s3 cp jesusfingers-backend.zip s3://${{ secrets.AWS_S3_BUCKET }}
 
       - name: send result to slack
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           author_name: Build # default: 8398a7@action-slack
-          fields: repo,commit,message,author # default: repo,commit
+          fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
           mention: here
           if_mention: failure,cancelled
         env:
