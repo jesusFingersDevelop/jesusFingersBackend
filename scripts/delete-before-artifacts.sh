@@ -1,1 +1,1 @@
-rm -rf /home/ec2-user/ssuwith
+rm -rf /home/ec2-user/jesus
