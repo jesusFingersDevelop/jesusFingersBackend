@@ -12,4 +12,4 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 server:
-  port: ${PORT}
+  port: ${JESUSFINGERS_APPLICATION_PORT}
