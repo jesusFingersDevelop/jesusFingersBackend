@@ -2,7 +2,7 @@ package com.jesusfingers.fingers.domain.reservation.model.entity
 
 import com.jesusfingers.fingers.domain.common.BaseTimeEntity
 import com.jesusfingers.fingers.domain.physioTherapist.model.entity.PhysioTherapist
-import com.jesusfingers.fingers.domain.users.model.entity.User
+import com.jesusfingers.fingers.domain.user.model.entity.User
 import java.time.LocalDateTime
 import javax.persistence.*
 

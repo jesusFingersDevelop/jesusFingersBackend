@@ -1,4 +1,4 @@
-package com.jesusfingers.fingers.domain.users.model.entity
+package com.jesusfingers.fingers.domain.user.model.entity
 
 import com.jesusfingers.fingers.domain.common.BaseTimeEntity
 import javax.persistence.*
@@ -8,7 +8,7 @@ import javax.persistence.*
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long? = null,
 
     @Column(nullable = false)
     var name: String,
@@ -23,4 +23,16 @@ data class User(
     var password: String,
 
     var deleted: Boolean = false,
-): BaseTimeEntity()
+): BaseTimeEntity() {
+    fun updateUserInfo(name: String, phone: String, email: String) {
+        this.name = name
+        this.phone = phone
+        this.email = email
+    }
+    fun updateUserPassword(password: String) {
+        this.password = password
+    }
+    fun updateUserDeleted() {
+        this.deleted = true
+    }
+}
