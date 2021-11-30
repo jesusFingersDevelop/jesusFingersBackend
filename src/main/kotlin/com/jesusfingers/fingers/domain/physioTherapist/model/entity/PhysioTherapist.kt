@@ -8,14 +8,25 @@ import javax.persistence.*
 data class PhysioTherapist(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long,
 
     @Column(nullable = false)
-    var name: String? = null,
+    var name: String,
 
-    var email: String? = null,
+    @Column(nullable = false)
+    var phone: String,
 
-    var password: String? = null,
+    @Column(nullable = false)
+    var email: String,
 
-    var deleted: Boolean = false,
+    @Column(nullable = false)
+    var password: String,
+
+    @Column(nullable = false)
+    var address: String,
+
+    var isConfirmed: Boolean = false,
+
+    var deleted: Boolean = false
+
 ): BaseTimeEntity()
