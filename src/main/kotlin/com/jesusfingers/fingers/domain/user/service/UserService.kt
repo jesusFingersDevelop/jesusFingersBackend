@@ -34,17 +34,17 @@ class UserService(
     }
 
     @Transactional
-    fun updateUserInfo(userId: Long, name: String, phone: String, email: String): UserInfoDto {
+    fun updateUserInfo(userId: Long, name: String, phone: String, email: String): User {
         val user = userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException()
         user.updateUserInfo(name, phone, email)
-        return UserInfoDto(user.name, user.phone, user.email, user.deleted)
+        return user
     }
 
     @Transactional
-    fun updateUserPassword(userId: Long, password: String): UserInfoDto {
+    fun updateUserPassword(userId: Long, password: String): User {
         val user = userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException()
         user.updateUserPassword(password)
-        return UserInfoDto(user.name, user.phone, user.email, user.deleted)
+        return user
     }
 
     @Transactional
