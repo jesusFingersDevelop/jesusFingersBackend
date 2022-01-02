@@ -28,6 +28,11 @@ dependencies {
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+
+	implementation("io.jsonwebtoken:jjwt-api:0.10.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.10.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.10.5")
 }
 
 tasks.withType<KotlinCompile> {

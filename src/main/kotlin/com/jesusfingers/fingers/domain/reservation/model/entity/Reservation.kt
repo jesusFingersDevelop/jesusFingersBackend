@@ -1,6 +1,7 @@
 package com.jesusfingers.fingers.domain.reservation.model.entity
 
 import com.jesusfingers.fingers.domain.common.BaseTimeEntity
+import com.jesusfingers.fingers.domain.eventType.model.entity.EventType
 import com.jesusfingers.fingers.domain.physioTherapist.model.entity.PhysioTherapist
 import com.jesusfingers.fingers.domain.user.model.entity.User
 import java.time.LocalDateTime
@@ -11,24 +12,33 @@ import javax.persistence.*
 data class Reservation(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long? = null,
 
     var isConfirmed: Boolean = false,
 
     @Column(nullable = false)
-    var startAt: LocalDateTime? = null,
-
-    @Column(nullable = false)
-    var eventType: String? = null,
+    var startAt: LocalDateTime,
 
     var deleted: Boolean = false,
 
     @ManyToOne
     @JoinColumn(name = "pt_id")
-    val pt: PhysioTherapist,
+    val ptId: PhysioTherapist,
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: User
+    val userId: User,
 
-): BaseTimeEntity()
+    @ManyToOne
+    @JoinColumn(name = "event_type_id")
+    val eventTypeId: EventType,
+
+): BaseTimeEntity() {
+    fun changeConfirmState(state: Boolean) {
+        this.isConfirmed = state
+    }
+
+    fun deleteReservation() {
+        this.deleted = true
+    }
+}
