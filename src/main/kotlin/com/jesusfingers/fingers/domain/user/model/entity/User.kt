@@ -10,16 +10,16 @@ data class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    @Column(nullable = false)
+    @Column
     var name: String,
 
-    @Column(nullable = false)
+    @Column
     var phone: String,
 
-    @Column(nullable = false)
+    @Column
     var email: String,
 
-    @Column(nullable = false)
+    @Column
     var password: String,
 
     var deleted: Boolean = false,
@@ -29,9 +29,11 @@ data class User(
         this.phone = phone
         this.email = email
     }
+
     fun updateUserPassword(password: String) {
         this.password = password
     }
+
     fun updateUserDeleted() {
         this.deleted = true
     }

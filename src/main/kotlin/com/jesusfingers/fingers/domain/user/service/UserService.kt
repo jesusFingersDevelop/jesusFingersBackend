@@ -24,13 +24,12 @@ class UserService(
 
         userRepository.save(user)
 
-        return UserInfoDto(user.name, user.phone, user.email, user.deleted)
+        return UserInfoDto(user.id, user.name, user.phone, user.email, user.deleted)
     }
 
     @Transactional
-    fun getUserInfo(userId: Long): UserInfoDto {
-        val user = userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException()
-        return UserInfoDto(user.name, user.phone, user.email, user.deleted)
+    fun getUser(userId: Long): User {
+        return userRepository.findByIdOrNull(userId) ?: throw UserNotFoundException()
     }
 
     @Transactional
